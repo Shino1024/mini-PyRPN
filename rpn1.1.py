@@ -1,21 +1,26 @@
-from tkinter import *
+# Shino's Reverse Polish Notation calculator with basic functionality.
+# Going to add some new operations in the near future.
+
+from tkinter import * # Import the essential modules for the graphical user interface.
 from tkinter import ttk
-import tkinter.messagebox
-rt = Tk()
-rt.title("RPN Calc 1.0 by Shino")
-rt.resizable(0, 0)
+import tkinter.messagebox # For MessageBox widget.
+rt = Tk() # The root.
+rt.title("RPN Calc 1.0 by Shino") # The title of the application.
+rt.resizable(0, 0) # The window should not be resizable.
 mf = ttk.Frame(rt)
-argument, stacklist = StringVar(), StringVar()
-mf.grid(column = 0, row = 0, sticky = (N, W, E, S))
+argument, stacklist = StringVar(), StringVar() # For changing the content of the certain elements of the application.
+mf.grid(column = 0, row = 0, sticky = (N, W, E, S)) # Everything is displayed in a grid.
 label0 = Label(mf, textvariable = stacklist)
 label0.grid(row = 0, columnspan = 3)
 label1 = Label(mf, textvariable = argument, background = "white")
 label1.grid(row = 0, column = 3)
 stack, command, num = [], '', ''
+
+# The functions for "constructing" the number that is to be added to the stack.
 def construct0():
     global num, argument
     if num == '0':
-        tkinter.messagebox.showinfo("An error", "Can't begin with a zero.")
+        tkinter.messagebox.showinfo("The error", "Can't begin with a zero.")
     else:
         num += '0'
         argument.set(num)
@@ -55,41 +60,41 @@ def construct9():
     global num, argument
     num += '9'
     argument.set(num)
-def constructd():
+def constructd(): # The dot.
     global num, argument
     if '.' in num:
-        tkinter.messagebox.showinfo("An error", "A dot is used already.")
+        tkinter.messagebox.showinfo("The error", "A dot is used already.")
     elif num == '':
         num += "0."
         argument.set(num)
     else:
         num += '.'
         argument.set(num)
-def constructm():
+def constructm(): # The minus.
     global num, argument
     if num == '':
         num += '-'
         argument.set(num)
     else:
-        tkinter.messagebox.showinfo("An error", "A minus can be put only on the beginning.")
-def goback():
+        tkinter.messagebox.showinfo("The error", "A minus can be put only on the beginning.")
+def goback(): # The "backspace".
     global num, argument
     if num == '':
-        tkinter.messagebox.showinfo("An error", "It's empty already.")
+        tkinter.messagebox.showinfo("The error", "It's empty already.")
     else:
         num = num[:-1]
         argument.set(num)
-def delfromstack():
+def delfromstack(): # Deleting elements from the stack.
     global stacklist, stack
     if len(stack) == 0:
-        tkinter.messagebox.showinfo("An error", "There is nothing on the stack.")
+        tkinter.messagebox.showinfo("The error", "There is nothing on the stack.")
     else:
         stack = stack[:-1]
         if len(stack) == 0:
             stacklist.set('')
         else:
             stacklist.set(', '.join([str(x) for x in stack]))
-def push():
+def push(): # Pushing on the stack.
     global num, stacklist, argument
     if float(num) % 1 == 0.0:
         stack.append(int(num))
@@ -103,62 +108,64 @@ def factorial(number):
         return 1
     else:
         return number * factorial(number - 1)
-def performa():
+def performa(): # Addition.
     global stack
     if len(stack) < 2:
-        tkinter.messagebox.showinfo("An error", "At least 2 elements in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
     else:
         stack[-2] = stack[-2] + stack[-1]
         del stack[-1]
         if stack[-1] % 1 == 0.0:
             stack[-1] = int(stack[-1])
         stacklist.set(', '.join([str(x) for x in stack]))
-def performs():
+def performs(): # Substraction.
     global stack
     if len(stack) < 2:
-        tkinter.messagebox.showinfo("An error", "At least 2 elements in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
     else:
         stack[-2] = stack[-2] - stack[-1]
         del stack[-1]
         if stack[-1] % 1 == 0.0:
             stack[-1] = int(stack[-1])
         stacklist.set(', '.join([str(x) for x in stack]))
-def performm():
+def performm(): # Multiplication.
     global stack
     if len(stack) < 2:
-        tkinter.messagebox.showinfo("An error", "At least 2 elements in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
     else:
         stack[-2] = stack[-2] * stack[-1]
         del stack[-1]
         if stack[-1] % 1 == 0.0:
             stack[-1] = int(stack[-1])
         stacklist.set(', '.join([str(x) for x in stack]))
-def performd():
+def performd(): # Division.
     global stack
     if len(stack) < 2:
-        tkinter.messagebox.showinfo("An error", "At least 2 elements in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
     else:
         if stack[-1] == 0:
-            tkinter.messagebox.showinfo("An error", "The divisior is 0, can't perform the division.")
+            tkinter.messagebox.showinfo("The error", "The divisior is 0, can't perform the division.")
         else:
             stack[-2] = int((stack[-2] / stack[-1]) * 1000000 + 0.5) / 1000000.0
             del stack[-1]
             if stack[-1] % 1 == 0.0:
                 stack[-1] = int(stack[-1])
             stacklist.set(', '.join([str(x) for x in stack]))
-def performf():
+def performf(): # Factorial.
     global stack
     if len(stack) < 1:
-        tkinter.messagebox.showinfo("An error", "At least 1 element in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 1 element in the stack are required.")
     elif type(stack[-1]) != int:
-        tkinter.messagebox.showinfo("An error", "The type of an argument is not an integer.")
+        tkinter.messagebox.showinfo("The error", "The type of an argument is not an integer.")
     elif stack[-1] < 0:
-        tkinter.messagebox.showinfo("An error", "Unable to factor a negative number.")
+        tkinter.messagebox.showinfo("The error", "Unable to factor a negative number.")
     elif stack[-1] > 25:
-        tkinter.messagebox.showinfo("An error", "The number is too large.")
+        tkinter.messagebox.showinfo("The error", "The number is too large.")
     else:
         stack[-1] = factorial(stack[-1])
         stacklist.set(', '.join([str(x) for x in stack]))
+
+# Drawing the grid.
 bt0 = Button(mf, text = "7", command = construct7, width = 5, height = 2)
 bt1 = Button(mf, text = "8", command = construct8, width = 5, height = 2)
 bt2 = Button(mf, text = "9", command = construct9, width = 5, height = 2)
@@ -199,4 +206,4 @@ bt16.grid(column = 3, row = 1)
 bt17.grid(column = 2, row = 1)
 bt18.grid(column = 1, row = 1)
 bt19.grid(column = 0, row = 1)
-rt.mainloop()
+rt.mainloop() # The main loop of the application in order to make it more IDLE-friendly.
