@@ -1,5 +1,5 @@
 # mini-PyRPN
-This is a minimalistic calculator, written in Python. It takes advantage of the built-in
+This is a minimalistic calculator, written in Python 3.4. It takes advantage of the built-in
 Tkinter library, so the code can be run without installing any additional dependencies.
 
 # FUNCTIONALITY:
