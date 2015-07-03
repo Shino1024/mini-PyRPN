@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Shino's Reverse Polish Notation calculator with basic functionality.
 # Going to add some new operations in the near future.
 
