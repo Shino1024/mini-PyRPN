@@ -7,7 +7,7 @@ from tkinter import * # Import the essential modules for the graphical user inte
 from tkinter import ttk
 import tkinter.messagebox # For MessageBox widget.
 rt = Tk() # The root.
-rt.title("RPN Calc 1.0 by Shino") # The title of the application.
+rt.title("RPN Calc 1.1 by Shino") # The title of the application.
 rt.resizable(0, 0) # The window should not be resizable.
 mf = ttk.Frame(rt)
 argument, stacklist = StringVar(), StringVar() # For changing the content of the certain elements of the application.
@@ -78,7 +78,7 @@ def constructm(): # The minus.
         num += '-'
         argument.set(num)
     else:
-        tkinter.messagebox.showinfo("The error", "A minus can be put only on the beginning.")
+        tkinter.messagebox.showinfo("The error", "A minus can be put only in the beginning.")
 def goback(): # The "backspace".
     global num, argument
     if num == '':
@@ -143,7 +143,7 @@ def performm(): # Multiplication.
 def performd(): # Division.
     global stack
     if len(stack) < 2:
-        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack ais required.")
     else:
         if stack[-1] == 0:
             tkinter.messagebox.showinfo("The error", "The divisior is 0, can't perform the division.")
@@ -156,15 +156,36 @@ def performd(): # Division.
 def performf(): # Factorial.
     global stack
     if len(stack) < 1:
-        tkinter.messagebox.showinfo("The error", "At least 1 element in the stack are required.")
+        tkinter.messagebox.showinfo("The error", "At least 1 element in the stack is required.")
     elif type(stack[-1]) != int:
-        tkinter.messagebox.showinfo("The error", "The type of an argument is not an integer.")
+        tkinter.messagebox.showinfo("The error", "The type of the argument is not an integer.")
     elif stack[-1] < 0:
         tkinter.messagebox.showinfo("The error", "Unable to factor a negative number.")
     elif stack[-1] > 25:
         tkinter.messagebox.showinfo("The error", "The number is too large.")
     else:
         stack[-1] = factorial(stack[-1])
+        stacklist.set(', '.join([str(x) for x in stack]))
+def performr(): # The root.
+    global stack
+    if len(stack) < 2:
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
+    else:
+        stack[-2] = stack[-2] ** stack[-1]
+        del stack[-1]
+        stacklist.set(', '.join([str(x) for x in stack]))
+def performmd(): # The modulo.
+    global stack
+    if len(stack) < 2:
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
+    elif stack[-1] >= 0:
+        stack[-2] = stack[-2] % stack[-1]
+        del stack[-1]
+        stacklist.set(', '.join([str(x) for x in stack]))
+    else:
+        stack[-1] = -stack[-1]
+        stack[-2] = stack[-2] % stack[-1]
+        del stack[-1]
         stacklist.set(', '.join([str(x) for x in stack]))
 
 # Drawing the grid.
