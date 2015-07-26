@@ -166,6 +166,14 @@ def performf(): # Factorial.
     else:
         stack[-1] = factorial(stack[-1])
         stacklist.set(', '.join([str(x) for x in stack]))
+def performp(): # The power.
+    global stack
+    if len(stack) < 2:
+        tkinter.messagebox.showinfo("The error", "At least 2 elements in the stack are required.")
+    else:
+        stack[-2] = stack[-2] ** stack[-1]
+        del stack[-1]
+        stacklist.set(', '.join([str(x) for x in stack]))
 def performr(): # The root.
     global stack
     if len(stack) < 2:
